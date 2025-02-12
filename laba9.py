@@ -1,8 +1,19 @@
-f, slovar = [], {}
-with open('text_dlya_labi_9.txt', 'r', encoding='UTF-8') as file:
+with open('text_dlya_labi_9.txt', 'r') as file:
     for i in file.readlines():
-        slovar[i.split()[0]] = sum(list(map(float, i.split()[1:])))
+        f = i.split()
+index = 0
+index_c = 0
+mmax = str()
+for i in f:
+    if index % 2 == 0:
+        if mmax == str():
+            mmax = int(i)
+        elif mmax < int(i):
+            mmax = int(i)
+            index_c = index
+    index += 1
+f[index_c] = str(index_c)
 file = open('Good.txt', 'w+')
-for i in dict(sorted(slovar.items(), key=lambda item: item[1], reverse=True)).items():
-    file.write(f'{i[0]}: {i[1]}\n')
+for i in f:
+    file.write(f'{int(i)} ')
 file.close()
