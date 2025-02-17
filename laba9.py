@@ -1,3 +1,4 @@
+# Максимальный элемент массива среди элементов с четными индексами заменить значение его индекса
 with open('text_dlya_labi_9.txt', 'r') as file:
     for i in file.readlines():
         f = i.split()
