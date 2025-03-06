@@ -3,20 +3,14 @@ import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 
-xMin1 = 0
-xMax1 = 10
-yMin1 = 0
-yMax1 = 10
-xMin2 = 5
-xMax2 = 15
-yMin2 = 5
-yMax2 = 15
+xMin1, xMax1, yMin1, yMax1, xMin2, xMax2, yMin2, yMax2 = 0, 10, 0, 10, 5, 15, 5, 15
+k = 3
 p = 0.8
-model = KNeighborsClassifier(n_neighbors=3)
-random.seed(110)
+model = KNeighborsClassifier(n_neighbors=k)
+random.seed(26)
 pointsCount1 = []
 pointsCount2 = []
-x_train, y_train, x_test, y_test = 0, 0, 0, 0
+x_train, y_train, x_test = 0, 0, 0
 y = []
 for i in range(50):
     pointsCount1.append([random.uniform(xMin1, xMax1), random.uniform(yMin1, yMax1)])
@@ -33,7 +27,7 @@ def train_test_split(xx, yy):
     return xx[:int(100 * p)], yy[:int(100 * p)], xx[int(100 * p):], yy[int(100 * p):]
 
 
-def fitt(xx_train, yy_train, xx_test):
+def fit(xx_train, yy_train, xx_test):
     model.fit(xx_train, yy_train)
     return model.predict(xx_test)
 
@@ -43,9 +37,8 @@ def computeAccuracy(yy_test, yy_predict):
 
 
 x_train, y_train, x_test, y_test = train_test_split(x, y)
-y_predict = fitt(x_train, y_train, x_test)
+y_predict = fit(x_train, y_train, x_test)
 accuracy = computeAccuracy(y_test, y_predict)
-plt.figure(figsize=(10, 6))
 
 x_train1 = []
 x_train2 = []
@@ -57,10 +50,7 @@ x_test2 = []
 for i in x_test:
     x_test1.append(i[0])
     x_test2.append(i[1])
-x_train1o = []
-x_train2o = []
-x_train1x = []
-x_train2x = []
+x_train1o, x_train2o, x_train1x, x_train2x = [], [], [], []
 index = 0
 for i in y_train:
     if i == 0:
@@ -72,14 +62,7 @@ for i in y_train:
     index += 1
 plt.scatter(x_train1o, x_train2o, marker='o', c='blue')
 plt.scatter(x_train1x, x_train2x, marker='x', c='blue')
-x_test1ok = []
-x_test2ok = []
-x_test1xk = []
-x_test2xk = []
-x_test1oz = []
-x_test2oz = []
-x_test1xz = []
-x_test2xz = []
+x_test1ok, x_test2ok, x_test1xk, x_test2xk, x_test1oz, x_test2oz, x_test1xz, x_test2xz = [], [], [], [], [], [], [], []
 index = 0
 for i, j in zip(y_predict, y_test):
     if i != j:
@@ -100,12 +83,5 @@ for i, j in zip(y_predict, y_test):
 plt.scatter(x_test1ok, x_test2ok, marker='o', c='red')
 plt.scatter(x_test1xk, x_test2xk, marker='x', c='red')
 plt.scatter(x_test1xz, x_test2xz, marker='x', c='green')
-
-# Настройка графика
-plt.title('Классификация точек с помощью k-NN')
-plt.xlabel('Признак 1')
-plt.ylabel('Признак 2')
-plt.axhline(0, color='grey', lw=0.5)
-plt.axvline(0, color='grey', lw=0.5)
 plt.grid()
 plt.show()
