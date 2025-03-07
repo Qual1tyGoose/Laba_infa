@@ -82,6 +82,7 @@ for i, j in zip(y_predict, y_test):
     index += 1
 plt.scatter(x_test1ok, x_test2ok, marker='o', c='red')
 plt.scatter(x_test1xk, x_test2xk, marker='x', c='red')
+plt.scatter(x_test1oz, x_test2oz, marker='o', c='green')
 plt.scatter(x_test1xz, x_test2xz, marker='x', c='green')
 plt.grid()
 plt.show()
