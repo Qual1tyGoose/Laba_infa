@@ -56,19 +56,27 @@ def fit(xx_train, yy_train, xx_test):
     return y_pred
 
 def computeAccuracy(yy_test, yy_predict):
+    global y_predict
     n1 = 0
     for (ii, jj) in zip(yy_test, yy_predict):
         if ii != jj:
             n1 += 1
     if n1 / len(yy_test) >= (len(yy_test) - n1) / len(yy_test):
+        y_predict = []
+        for ii in yy_predict:
+            if ii == 0:
+                y_predict.append(1)
+            else:
+                y_predict.append(0)
         return n1 / len(yy_test)
-    return (len(y_test) - n1)/len(y_test)
+    else:
+        return (len(y_test) - n1)/len(y_test)
 
 
 x_train, y_train, x_test, y_test = train_test_split(x, y)
 y_predict = fit(x_train, y_train, x_test)
-print(y_test, y_predict)
 accuracy = computeAccuracy(y_test, y_predict)
+print(y_test, y_predict)
 print(accuracy)
 
 x_train1 = []
