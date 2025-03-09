@@ -55,6 +55,7 @@ def fit(xx_train, yy_train, xx_test):
             y_pred.append(0)
     return y_pred
 
+
 def computeAccuracy(yy_test, yy_predict):
     global y_predict
     n1 = 0
@@ -70,7 +71,7 @@ def computeAccuracy(yy_test, yy_predict):
                 y_predict.append(0)
         return n1 / len(yy_test)
     else:
-        return (len(y_test) - n1)/len(y_test)
+        return (len(yy_test) - n1) / len(yy_test)
 
 
 x_train, y_train, x_test, y_test = train_test_split(x, y)
