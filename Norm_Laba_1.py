@@ -1,12 +1,10 @@
 import random
 import matplotlib.pyplot as plt
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
+import math
 
 xMin1, xMax1, yMin1, yMax1, xMin2, xMax2, yMin2, yMax2 = 0, 10, 0, 10, 5, 15, 5, 15
 k = 3
 p = 0.8
-model = KNeighborsClassifier(n_neighbors=k)
 random.seed(26)
 pointsCount1 = []
 pointsCount2 = []
@@ -28,17 +26,50 @@ def train_test_split(xx, yy):
 
 
 def fit(xx_train, yy_train, xx_test):
-    model.fit(xx_train, yy_train)
-    return model.predict(xx_test)
-
+    y_pred = []
+    for kk in xx_test:
+        ff = []
+        yy = []
+        for iii in yy_train:
+            yy.append(iii)
+        for ii in xx_train:
+            ff.append(math.sqrt((ii[0] - kk[0]) ** 2 + (ii[1] - kk[1]) ** 2))
+        dd = 0
+        for _ in range(k):
+            count = 0
+            count_c = 0
+            mmin = str()
+            for jj in ff:
+                if mmin == str():
+                    mmin = jj
+                elif mmin > jj:
+                    mmin = jj
+                    count_c = count
+                count += 1
+            ff.remove(mmin)
+            dd += yy[count_c]
+            yy.remove(yy[count_c])
+        if dd >= 2:
+            y_pred.append(1)
+        else:
+            y_pred.append(0)
+    return y_pred
 
 def computeAccuracy(yy_test, yy_predict):
-    return accuracy_score(yy_test, yy_predict)
+    n1 = 0
+    for (ii, jj) in zip(yy_test, yy_predict):
+        if ii != jj:
+            n1 += 1
+    if n1 / len(yy_test) >= (len(yy_test) - n1) / len(yy_test):
+        return n1 / len(yy_test)
+    return (len(y_test) - n1)/len(y_test)
 
 
 x_train, y_train, x_test, y_test = train_test_split(x, y)
 y_predict = fit(x_train, y_train, x_test)
+print(y_test, y_predict)
 accuracy = computeAccuracy(y_test, y_predict)
+print(accuracy)
 
 x_train1 = []
 x_train2 = []
