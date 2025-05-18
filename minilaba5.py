@@ -1,4 +1,3 @@
-# 3 6 9
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_circles, make_moons, make_blobs, make_s_curve, make_classification
 from sklearn.preprocessing import StandardScaler
@@ -35,7 +34,8 @@ def generate_noisy(n_samples=500, noise=0.15):
 
 
 def cluster_Mean_shift(X):
-    ms = MeanShift(bandwidth=estimate_bandwidth(X, quantile=0.2, n_samples=500), bin_seeding=True)
+    bandwidth = estimate_bandwidth(X, quantile=0.2, n_samples=500)
+    ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
     ms.fit(X)
     return ms.labels_
 
@@ -59,28 +59,29 @@ datasets = {
     "S-образная структура": generate_s_shape(),
     "Кластеры с шумом": generate_noisy()
 }
+
 results = {}
 plt.figure(figsize=(20, 25))
 plot_num = 1
 for dataset_name, (X, y) in datasets.items():
     X = StandardScaler().fit_transform(X)
-    Mean_shift = cluster_Mean_shift(X)
-    dbscan = cluster_dbscan(X)
-    OPTICS = cluster_OPTICS(X)
+    mean_shift_labels = cluster_Mean_shift(X)
+    dbscan_labels = cluster_dbscan(X)
+    optics_labels = cluster_OPTICS(X)
     results[dataset_name] = {
-        "Mean-shift": Mean_shift,
-        "DBSCAN": dbscan,
-        "OPTICS": OPTICS
+        "Mean-shift": mean_shift_labels,
+        "DBSCAN": dbscan_labels,
+        "OPTICS": optics_labels
     }
     plt.subplot(6, 3, plot_num)
-    plt.scatter(X[:, 0], X[:, 1], c=Mean_shift, cmap='viridis', s=10)
-    plt.title("Mean-shift")
+    plt.scatter(X[:, 0], X[:, 1], c=mean_shift_labels, cmap='viridis', s=10)
+    plt.title(f"{dataset_name}\nMean-shift")
     plt.subplot(6, 3, plot_num + 1)
-    plt.scatter(X[:, 0], X[:, 1], c=dbscan, cmap='viridis', s=10)
-    plt.title("DBSCAN")
+    plt.scatter(X[:, 0], X[:, 1], c=dbscan_labels, cmap='viridis', s=10)
+    plt.title(f"{dataset_name}\nDBSCAN")
     plt.subplot(6, 3, plot_num + 2)
-    plt.scatter(X[:, 0], X[:, 1], c=OPTICS, cmap='viridis', s=10)
-    plt.title("OPTICS")
+    plt.scatter(X[:, 0], X[:, 1], c=optics_labels, cmap='viridis', s=10)
+    plt.title(f"{dataset_name}\nOPTICS")
     plot_num += 3
 plt.tight_layout()
 plt.show()
